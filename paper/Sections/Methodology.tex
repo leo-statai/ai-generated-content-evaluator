@@ -1,0 +1,72 @@
+\section{Methodology}
+
+The methodology was executed in two distinct phases: content generation using NotebookLM \cite{google:notebooklm} and automated evaluation using a custom Python script developed with the assistance of the Gemini CLI \cite{google:geminicli}.
+
+\subsection{Phase 1: Content Generation with NotebookLM}
+
+The first phase involved generating a comprehensive technical report based on the transcript of the seminar "Talking to Machines: A Practical Introduction to Generative AI." Google's NotebookLM \cite{google:notebooklm} was selected as the primary generation tool. The full seminar transcript was loaded as a source into NotebookLM.
+
+To guide the content generation, the following custom-engineered prompt was used:
+
+\begin{lstlisting}[breaklines=true, basicstyle=\ttfamily\small]
+Based on the provided seminar, draft a comprehensive technical report that synthesizes the fundamental concepts, architectures, and philosophical considerations of generative AI. The objective is to create an informative document for professionals seeking to deepen their understanding of the underlying mechanisms and the broader implications of these technologies.
+\end{lstlisting}
+
+This prompt instructed the model to create a high-level synthesis of the material, focusing on both the technical and philosophical aspects, resulting in the document \texttt{technical\_report\_notebooklm.md}.
+
+\subsection{Phase 2: Automated Evaluation with Python and Gemini}
+
+The second phase focused on creating an automated system to evaluate the quality of the generated report. This was achieved by developing a Python script (\texttt{evaluate\_report.py}) designed to interact with the Gemini API.
+
+\subsubsection{Planning and Implementation}
+
+The development process began with a detailed plan (\texttt{python\_script\_plan.md, see in Project Files link}) that outlined the script's objective, architecture, and core components. The plan specified the use of the \texttt{google-generativeai} library, environment variables for API key management, and a modular structure for handling file I/O and API interaction.
+
+The implementation of this plan was carried out with the assistance of the \textbf{Gemini CLI}. The CLI agent was used to:
+\begin{itemize}
+    \item Scaffold the project structure.
+    \item Write the Python code for \texttt{evaluate\_report.py} based on the plan.
+    \item Create and manage dependencies in \texttt{requirements.txt}.
+    \item Debug the script by identifying and fixing errors related to API model names and rate limits.
+\end{itemize}
+
+The final script accepts the paths to the generated report and the source transcript as inputs. It then calls the Gemini API with a series of specialized prompts, each designed to assess the report against a predefined quality metric.
+
+\subsubsection{Evaluation Metrics and Prompts}
+
+The script evaluates the report based on four key metrics. For each metric, a specific prompt instructs the Gemini model to act as a specialized evaluator and return a score (1-10) and a detailed justification in JSON format.
+
+The prompts for each metric are as follows:
+
+\begin{enumerate}
+    \item \textbf{Clarity and Coherence:}
+    \begin{lstlisting}[breaklines=true, basicstyle=\ttfamily\small]
+As an Academic Reviewer, evaluate the clarity and coherence of the following report. 
+Is the language clear and unambiguous? Does the document flow logically from one section to the next? 
+Return a JSON object with 'score' (integer 1-10) and 'justification' (string).
+    \end{lstlisting}
+    
+    \item \textbf{Factual Accuracy:}
+    \begin{lstlisting}[breaklines=true, basicstyle=\ttfamily\small]
+As a Fact-Checker, you will be given a source transcript and a technical report. 
+Your task is to verify the factual accuracy of the report against the transcript. 
+Identify any discrepancies. Return a JSON object with 'score' (integer 1-10) and 'justification' (string) listing any errors found.
+    \end{lstlisting}
+    
+    \item \textbf{Depth of Analysis:}
+    \begin{lstlisting}[breaklines=true, basicstyle=\ttfamily\small]
+As a University Professor, assess the depth of analysis in this report. 
+Does it offer critical insights, implications, or connections to broader themes as a graduate-level document should? 
+Return a JSON object with 'score' (integer 1-10) and 'justification' (string).
+    \end{lstlisting}
+    
+    \item \textbf{Structural Adherence:}
+    \begin{lstlisting}[breaklines=true, basicstyle=\ttfamily\small]
+As an Academic Journal Editor, evaluate the report's adherence to a formal academic structure. 
+Is it well-formatted and does it contain all the necessary components of a technical report (e.g., Title, Abstract, logical sections)? 
+Return a JSON object with 'score' (integer 1-10) and 'justification' (string).
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Project Files}
+All project files, including the source code, generated reports, prompts and documentation, can be downloaded from the following link: \url{https://drive.google.com/drive/folders/1JHp41_uldpTGGTAxSeRzE7983Phq9YqZ?usp=sharing}

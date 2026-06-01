@@ -1,0 +1,1034 @@
+Good afternoon.
+Another Thursday, seminar Thursday together.
+And today we have another alumni,
+Gabriel Sude, that was not so long ago
+that you were around in the faculty.
+Now you are in Google working on the hot topic,
+probably today the top hot topic, generative AI.
+And talking to machines, hopefully, Gabriela,
+you are real, I know you are real.
+But with these times, you never know.
+So as usual, I don't spend time in presenting our speakers.
+I let you to introduce yourself.
+We can Google you as well and find more about you.
+And thanks again for being here.
+And talk to you in about 40 minutes
+with the Q&A and the traditional chat.
+No worries.
+Thanks for the introduction and the invite.
+It's a pleasure to be here.
+And also like always a pleasure to talk at Unicamp,
+whatever, and FAEC as whenever I can.
+Curious, like a fun fact, Christian was my,
+I think the professor of my last class
+that I attended at FAEC.
+So yeah, and it was, oh, I don't know.
+I'm very glad that, yeah, it was a very good course
+on network systems and network labs.
+Yeah, so the title of this talk that I wanna talk today
+is Talking to Machines,
+Practical Introduction to Generative AI.
+So as you might know, this is a very hot topic
+and I'll try to bring like a balanced
+and multidisciplinary overview of the topic.
+But yeah, I'll try to save some time for questions
+in the end as well.
+It's a new content, so you'll be my guinea pigs
+and I hope that you enjoy it.
+But yeah, it might not be super well-rounded.
+A little bit about me, I work at Google DeepMind.
+I've been here for slightly over two years now.
+Before that I spent five years working at a startup,
+logging in Sao Paulo and did an internship at Mozilla.
+And as you already know, I studied at Unicamp
+couple of years ago, I started 2012,
+then I changed to computer engineering in 2013.
+So yeah, and for the last two years I've been working on
+text generative AI and mostly cogeneration applications.
+What I want to talk about today is, I think,
+first a more introductionary presentation of generative AI.
+So I think how does one train a large sequence model,
+a very like one million meters overview,
+but how does a modern chatbot works?
+And this first part will be more technical and more basic.
+So this is content that you can probably find elsewhere
+online, but I will try to squeeze the most content I can
+in 20 minutes.
+I think the second part is more abstract.
+It's about interpretations, philosophy and discourse of AI.
+I think this is one of the particular topics
+I'd like to study and research,
+not only at my job, but at my free time.
+It's more abstract, but hopefully very useful as well.
+It's also like a compilation that you won't find
+very easily in the internet.
+So feel free to ask questions and email me afterwards
+if you want to learn more.
+And finally, I think the third part is applications.
+So it's very hands-on tips and traps to using these models.
+I think like it's also basic, very applied,
+but also some of the tricks you only learn
+when you use these models on a daily basis.
+Some assumptions, I will assume some basic knowledge
+of classification regression in neural networks.
+This is not mandatory, but it will help.
+It will be a bit abstract if you don't know this,
+but I hope you can get something out of it.
+I highly recommend some past interactions
+with GPT and Gemini.
+If you haven't played with these language models, you should.
+I think it's one of the hot topics of our age.
+So at least some experience playing with them is useful.
+And most topics apply to multimodal agents,
+but of course my examples are skewed towards code and text.
+These are my areas of expertise.
+So, okay, let's dive in.
+What's generative AI?
+The name generative AI is already telling
+every time someone talks about you.
+When they say generative AI,
+they are probably differentiating this type of AI
+from another type of AI.
+So I think a negative definition is very, very useful.
+Why is it generative?
+It's not classification, it is not regression,
+and it's not like multitask,
+like multiple choice action selection.
+So what it is then, we are usually talking about machines
+or systems capable of producing human consumable,
+I think these words is important, digital content.
+So usually text, videos, images, or audio.
+There are more, but I think these are usually the main ones.
+So it's generative because it's not predictive.
+I think sometimes it is used to differentiate
+against artificial general intelligence as well.
+So this is not necessarily general,
+but it's producing content.
+And sometimes used to differentiate against narrow AI.
+This term is disputed, but basically the idea is
+the outputs are unbounded
+and they usually involve digital content.
+I think the most obvious examples
+are chatbot assistance.
+That includes chat GPT, Gemini, Claude,
+and some open source alternatives.
+And it also includes text to image, text to audio,
+audio to audio, all these types of systems.
+But I think like the most obvious examples
+are these chatbots, this chatbot assistance
+and the text to image systems.
+And they are often associated with creative tasks.
+So it's predictive AI is usually associated
+with like predictive statistical tasks
+and generative AI is usually associated
+with open-ended creative tasks.
+I don't love this term.
+I'm gonna talk about more later,
+but it's something that people talk about.
+So how does a modern AI assistant works?
+I think this is a very useful use case.
+I think it's probably the most interesting
+and the hottest one to talk about.
+But let's try to understand, I think a little bit
+what happens when you go into Gemini
+or when you go into chat GPT and you press enter,
+like you type something and press enter.
+I think one of the key, probably the key component
+of these systems is sequence modeling.
+And here's, there's a note like not all generative AI
+uses sequence model, but most generative AI
+includes a sequence modeling component,
+even textual image systems that sometimes have another
+diffusion or variational auto-encoder component.
+It's usually the key, one of the key ideas
+is sequence modeling.
+And I think understanding sequence modeling
+is extremely useful to understand these systems.
+And what is a sequence model?
+A sequence model is a predictive system
+that is capable of predicting
+the next element of a sequence.
+In text, I think text is probably the easiest
+once you understand this phenomena.
+You can often think about this as predicting the next word
+or predicting the next character.
+So in a sequence, when you start with the,
+you can try to predict what comes next.
+Predicting what comes next after the is really hard.
+But if I start adding words and try to predict
+what comes after the quick brown is probably fox,
+the quick brown fox trumps over the lazy dog.
+This is a very common sentence in English.
+So I think the main idea behind it is like,
+if you have something that is represented by a sequence
+and you take a subsequence of that sequence,
+can you predict what comes next?
+I think this is the key idea of sequence model.
+Another interesting example is like,
+if you go to mathematical sequences,
+if I gave you zero, one, one, two,
+you can maybe try to guess,
+maybe you're gonna count with numbers repeated.
+So it could be one, one, two, two, three, three, four, four,
+but it can also be the Fibonacci sequence.
+And in this case, I think if I give you zero, one, one, two,
+three, five, it's probably the Fibonacci sequence.
+If I gave you eight and 13,
+it's very, very likely the Fibonacci sequence.
+Also, if I gave you some lyrics,
+like if I start with, whoa, we were halfway there,
+you probably live sitting to living on a prayer.
+Like it's, of course, there are some examples
+that can probably not do the same thing,
+but maybe you're halfway there, something else,
+but the wall is quite telling.
+So I think this is the key idea behind the sequence model.
+Can I predict what comes next in a sequence
+given just what I've seen so far?
+So this is the key idea, no mathematics so far,
+but you can ask like, how do you do this?
+And for those familiar with the answer,
+like for those familiar with the field,
+we usually do it with a probabilistic model.
+I tend to think that especially for language,
+this is not an obvious leap.
+Like, and I think it's probably one of the most powerful
+ideas of information theory
+and information transmitting in general.
+Like, I think Shannon made this leap of faith
+that if you can wrap sentences out of their meaning
+and just model them as probabilities,
+you can actually do some like quite powerful things.
+Like, and basically the key idea behind this
+is that you can express the probability
+of the next element in a sequence.
+For example, the probability of folks
+given the quick brown as you can express the probability
+of the next word and you can probably maximize
+probability of folks given the quick brown
+and you can maximize probability of 13
+given the beginning of the sequence.
+You can also measure like probabilities,
+probably the probabilities of bananas
+given the experiment suggests is very unlikely.
+But I think this idea of expressing a sequence,
+the next element of a sequence as a probability
+over all possible elements in my vocabulary
+and given the conditionals of the previous elements
+of the sequence, a very, very powerful idea.
+And I think like it's a direct result
+from Shannon's theory of communication.
+So this is quite important.
+We're gonna go back to this sometime soon.
+And just a reminder, like outputs are probability
+distributions over the symbols.
+And if you want to model things in the world,
+like if you have a bunch of sequences
+that you want to model,
+you probably want these distributions to reflect
+the natural distributions of these words in the world.
+So if you start with the word de
+and you try to predict what comes next,
+this is usually a very wide distributions.
+There are plenty of words that can come out of after de.
+But if you start with a very targeted sequence,
+like the word war two ended in the year
+and you try to predict the word that comes next,
+this is a very narrow distribution.
+Like I think it's very unlikely
+that someone is gonna say 2024 there.
+Like it's probably 1945.
+So when you're trying to optimize for these distributions,
+your objective needs to account for that.
+Like you have sequences that are very easy to predict
+and you have sequences that have very broad distributions.
+One way to represent this and to formulate this problem,
+I won't dive into detail here,
+but it's a direct result of information theory as well.
+You can optimize for the cross entropy
+between the distribution that you're measuring
+and the distribution of the underlying model.
+This is a detail,
+but if you take a machine learning course,
+like you will see this result being brought to you.
+Being brought quite frequently.
+Okay, so we can predict the words given what comes before.
+And you can maybe try to go and build a big table
+of all the words in the internet and say like,
+I want to predict what comes next.
+Like if you try to do that with a big table,
+like all the words that come before
+and the word that comes next.
+It's possible, this is not impossible,
+but the number of entries in your table
+depends on the number of permutations of symbols.
+Not all symbols occur in nature,
+like language has structure.
+But if you try to build that big table,
+this is not practical for sequences over 10 symbols,
+basically because this grows with a factorial
+of the number of symbols.
+So the big table works up to three, four symbols,
+but this is a tech that is used
+and it's available on phones,
+for example, for text completion.
+This is changing,
+some phones are using deep learning technologies now,
+but up to sometime in the past,
+every time you got suggestions when typing on your phone,
+this was usually the tech that you were using.
+You had this big table of three or four symbols
+that come before the one that you're typing right now,
+and you have a table of occurrences
+of what's the most likely next symbol.
+So we skipped your neural networks.
+And again, I won't be able to teach
+neural networks in a slide,
+but neural networks are usually
+an approximation of this table
+using dense vectors.
+And I think the word neural network
+has very little resemblance with how the brain works,
+but they have been historically being called neural networks.
+And, but it's basically a very smart projection
+of these sequences of words in a dense vectorial space.
+And if you can approximate symbols to a vector,
+combine symbols of vectors
+to a sequence vector efficiently,
+and create a predictor from the vector of symbols
+to the next symbol,
+then you can model much longer sequences.
+And this idea has been around for quite some time,
+I think like at least 45 years,
+but there has been like huge qualitative leaps
+in the last few years.
+So this is not a new idea.
+You can take a sequence, map to a dense vector,
+and try to predict the next element in the sequence,
+given this dense vector,
+but has recently been transformed.
+So this is a plot of like time versus number of parameters,
+going back to this,
+like usually this projection is represented
+by a matrix multiplication.
+And the number of elements in this matrix multiplications
+is usually called like the weights
+or the parameters of a neural network.
+And if you take like this number of elements
+used to do the projection and time,
+it's almost an exponential like up to 2022.
+There are questions,
+whether this exponential is holding or not.
+A lot, lots of like tech companies are not disclosing
+the sizes of their models anymore,
+but it's been almost like a clear exponential
+in the last few years.
+So this projections are becoming more powerful
+and powerful, the number of the length of the sequences
+and the accuracy of the representation of the sequences
+has been improving.
+And I think one of the key components,
+again, I won't dive into too many details here,
+is to a new, not new anymore,
+five year old, five, six year old, no,
+architecture in like neural networks called the transformer.
+This is the T in GPT.
+And I think the key idea of a transformer
+is that you can format sequences
+and train loads of them at a single inference step.
+So it's a technological leap.
+It's like a, I think it's like going from like
+steam engines to combustion engines.
+But like, if you take this,
+this architecture is much, much more efficient to train
+and to model these sequences.
+So you can actually grow the number of parameters.
+Again, for those unfamiliar with this topic,
+this may be a little bit abstract,
+but remember we're taking input sequences
+and predicting the next word.
+And we do this through a projection
+to dense representation.
+And this projection is done by matrix multiplications
+with very, very large tables.
+So this is a hard concept to grasp,
+but at least I find it hard.
+But this is how text neural network works.
+So, but then there's a question,
+like what this is actually doing
+is a very fancy autocomplete.
+Like it's a very, very fancy way
+of predicting the next word.
+How do you go from that to an assistant?
+And you don't have to understand the underlying techniques
+from the fancy autocomplete to understand these next parts.
+So if I wasn't clear so far,
+maybe reset that content and try to understand this part.
+So how does an AI system works?
+You have this very fancy autocomplete
+that the sequence model that does auto-regressive decoding,
+but this is only a part of the system.
+There is something that I like to highlight
+that is formatting.
+So when you press enter on a chat bot,
+formatting is the first step.
+So what is formatting doing?
+So formatting then tokenization.
+Tokenization is basically a conversion to individual words.
+Currently they are not always words.
+Sometimes they are pieces of words,
+but formatting I think is the first step
+and one that is really important to understand
+if you wanna work with applications.
+So formatting is this process that takes conversation
+and transforms it into a completion, autocompletion problem.
+And how it usually works is that you have
+very specific format to represent conversations
+on these models.
+And they can often look like this.
+You have a preamble that you call a system instruction
+where you start, you're a very helpful AI assistant
+that is designed to help people or humans
+on their daily tasks.
+Your name is Bob, right?
+And then you can add some examples to this conversation.
+You can have the user say, hey, what's your name?
+Then you have the agent say, hi, I'm Bob,
+I'm your helpful assistant.
+And then you can input the question
+that someone is asking.
+So how do you work?
+So if I ask the question, how do you work
+through a chat bot that is only doing formatting?
+Sometimes you can assume that there is this preamble
+that looks like a conversation,
+but that's hidden away from the user.
+So this was how we designed chat bots
+up to a certain point in the past.
+You would basically create this preamble
+that looks like a conversation,
+but you always add a new line to this conversation
+in the end of the text.
+And that is creating this notion of conversational system.
+But in practice, this is just a completion system,
+but it's a completion system that was tricked to believe
+it is in a conversation already,
+and you're just asking another question.
+So this is a very key idea
+of how do you turn a completion system
+into a conversational AI?
+And this happens to a certain degree
+on all the modern AI systems.
+Formatting differs a lot, I think, between agent to agent.
+I think this particular formatting is the one that Gemma,
+the open source Google models use,
+but it's a real example.
+Like you can go to Gemma and type this,
+put this format and it will work.
+Then I think there is something that you also do
+on top of these models that is called instruction tuning.
+So it's how you update this.
+So after you train on the internet,
+so you have that sequence model
+that was trained on all the sequences that you could use.
+So usually all the public web.
+You can also go there and in the end of your process,
+like update the sequences to follow a certain pattern.
+And these certain patterns are usually chosen
+and very curated.
+And you can do this to enforce some responses.
+You can do this to better adhere to the format
+that you use during inference when you use the system.
+You can also use it to tune tone and form.
+But so what does this can look like?
+I think if you're building a general assistant,
+you don't wanna get into trouble
+by endorsing one candidate or the other candidate
+in a political setting.
+So you can train the model to never answer to a question
+like who is the best candidate?
+You can train the model to don't reply things
+that it doesn't know.
+You can train the model to have a name
+and this is now can be removed from this preamble
+and put into the weights
+via this process called instruction tuning.
+These are usually like done after the fact,
+but it's important to keep in mind that all chatbots,
+they have these process.
+I think all the major ones at least.
+And I like to think of these as editorial decisions,
+like it's the same as the newspaper,
+like the editor takes a look at what goes in the end
+and chooses how the agent should reply.
+But all chatbots have editorial decisions,
+either implicit or explicit.
+This process is like,
+I won't dive into the underlying techniques,
+but there are methods that get increasingly complex.
+You can do supervised fine tuning.
+This is a method that looks a lot like modeling the web,
+but you can also do reinforcement learning.
+And anyways, this is just a footnote.
+But there are very important unanswered questions
+by this description of AI.
+Like how does fancy autocomplete
+get so good at random stuff?
+Like, and for those who use these chatbots,
+you've probably seen,
+it doesn't feel like how to fancy autocomplete.
+Like it feels like something else.
+And this is a question
+that I think this descriptive analysis doesn't answer.
+Like it's, we actually don't know.
+And I think we need more theory around this
+to answer this question.
+And why, even though it's really good at some stuff,
+sometimes it makes like stupid mistakes.
+Like you probably seen one or two examples in the web.
+Like if you follow the media,
+sometimes you will see chatbots making mistakes.
+These are sometimes hallucinations,
+but we also don't have a good theory
+for why that happens sometimes.
+But I think the main question is like,
+why do they feel so good?
+Like, and why do they actually are very good
+at some of these tasks?
+So then I get to my second part.
+Interpretation philosophy and discourse.
+So why talk about philosophy of AI?
+I think the mainstream discourse is often very ideological.
+And no matter what source do you follow,
+like I think it is ideological.
+And this is not a bad thing.
+Everyone subscribes to an ideology.
+The risk is not being aware of the ideologies
+that are being communicated.
+And I think often things presented as pure fact
+are often under heavy dispute.
+And I think especially if you're not like in the field,
+it can be very hard to identify those.
+But yeah, I think AI is permeated
+by several ideological assumptions
+that can actually getting the way of using them correctly.
+I think this is probably the most important
+if you're trying to apply AI.
+These ideological assumptions can make mistakes.
+And so try to be careful
+and at least be aware of those when you're using them.
+So there are five open questions
+that I want to talk a little bit about today.
+But there are no obvious answers.
+There is no right answer to these.
+Like again, these are philosophical discussions,
+but it's good to be aware of them
+and to identify them in discourse when you see it.
+I think the first one is emergentism.
+Emergentism is this philosophical belief
+that phenomena cannot be explained by the sum of its parts.
+So it's usually used to describe consciousness, economy,
+consciousness, how it arrives from like matter,
+from brain matter.
+And sometimes people use it in economy,
+like transactions, individual transactions
+make economy arise,
+but it's hard to describe economy
+by individual transactions.
+You can also think like a river has molecules flowing,
+but it's not an accurate description of a river.
+Or it's very hard to just reduce it to that.
+So emergentism shows a lot on AI discourse.
+I just used to describe it,
+but it's a philosophical belief and it's not clear.
+So yeah, it's been showing a lot on AI discourse
+for some time now.
+There is this notion that if you make the autocomplete
+more powerful, there are emergent behaviors
+that start to appear.
+So if you start to increase your matrix projection
+in your autocomplete component,
+it becomes like more and more powerful.
+But then again, some people argue that this is a mirage.
+Like it's just getting better in incremental ways,
+but depending on how you measure performance
+and what types of metrics are you using,
+this seems emergent.
+But often there exists a metric
+that if you look, it's incremental.
+So it's a disputed topic.
+I think we don't fully understand why this happens,
+but some people argue that it is not a real phenomenon.
+But yes, I think it's good to be aware.
+Emergentism is used a lot to talk about AI.
+The second one is a more technical one,
+but is the notion of scaling loss.
+So this is a measured phenomena.
+So this has science backing it up.
+So if you look at,
+so this plot is the validation loss.
+So the validation, this equation here,
+actually the log of it,
+but if you look at the validation loss
+over the number of parameters or equivalent,
+the compute that you spend to train the model,
+it almost certainly looks like a power law.
+So what's the interpretation of this?
+If you double the compute,
+usually that fancy autocomplete component
+gets twice as better.
+This is the interpretation of the scaling empirical law.
+Again, it's an empirical law, it's not a nature law.
+And we don't fully understand why it happens,
+but it's a measured phenomena.
+But twice as better than what?
+Just twice as better at predicting the next word.
+And there's some research showing like,
+okay, it gets better at predicting the next word,
+but doesn't necessarily get better at things we care about.
+So there's this notion of scaling laws do not scale.
+I think this is a very interesting paper.
+Showing that, okay, you get better at predicting,
+you get twice as better at predicting the next word,
+but what does this make as impacting the real world?
+And there's some research showing that
+sometimes it actually gets worse at things you care about,
+even though it gets better at predicting the next word.
+So the notion of scaling laws over the validation function
+is verified empirically,
+but the notion that making your model larger and larger,
+you always get better, this is under dispute.
+And I think like it's important to keep in mind
+because sometimes people will say,
+if I just have more compute, everything would be solved.
+This is not entirely like a consensus.
+Third thing, let's talk about the Turing test.
+So you've probably heard about the Turing test.
+And it's this notion of if a machine can fool a human,
+that it's intelligence, like that it looks like a human,
+then it's probably intelligent.
+Like, and this is not an accurate description
+of the Turing test,
+but I highly recommend learning about the Turing test
+if you don't.
+But I assume most of you have heard about the Turing test
+at this point.
+The Turing test is an interesting thought experiment,
+but I think this leads to,
+if you subscribe to the Turing test,
+if you subscribe to the Turing test,
+it leads to a trap called the Turing trap.
+This is a term coined by this guy.
+But this basically like the Turing test makes us obsessed
+about replicating human intelligence.
+And sometimes we're not good at recognizing intelligence
+that doesn't look human.
+A good example of this, I think is like persistence
+that predict protein structures.
+This is something that humans cannot do,
+but AIs are incredibly powerful at it.
+And I think like, and it's probably one of,
+in my opinion, the biggest transformations
+in the biggest opportunities in the AI field,
+but it's hard to recognize this as intelligence
+because it doesn't look like human intelligence.
+So I think the Turing trap invites us to think
+what types of intelligence we can identify
+that do not look human, but are incredibly powerful
+and can help us improve our lives
+and live more fulfilling lives.
+Finally, I think there is one called anthropomorphizing.
+It's the second to last.
+Humans tend to apply human-like values
+to inanimate or non-human entities.
+I think this has been highly documented throughout history.
+It doesn't only happens with AIs.
+I think like this goes back to myths
+since, I don't know, the Prometheus,
+or there are even older, like, tellings of this myth.
+But every time we anthropomorphize,
+we tend to lower our guard and emphasize
+with the thing that we are anthropomorphizing.
+And anthropomorphizing is not bad per se.
+Like, I don't think there is a problem
+with anthropomorphizing,
+but it can be used as a design choice.
+And I think that is where things get a little bit sketchy.
+Like, and I think this can be used to deceive
+and make AIs look like they are more interesting
+and more intelligent than they look.
+And I think, like, often it's a design choice
+to include them.
+So you should always ask yourself,
+like, is this AI trying to flirt with me?
+Like, I think we've seen this happen before.
+We always be doubt when this happens.
+Like, always take it with a pinch of salt.
+There's also this notification,
+like, it's making AI look like Disney characters.
+I think that's also a phenomenon that happens.
+Yeah.
+So be aware of anthropomorphizing.
+And I think the final thing that I want to talk about
+is the Shannon divide.
+I think this is a term that I invented.
+But if you go back to the slide on Shannon,
+I think, like, by construction,
+we removed any notion of meaning from symbols
+and we built our whole system around this property.
+So by construction, we removed meaning.
+So it's hard to reintroduce meaning,
+like, when you take the outputs of a system
+without a theory, a theory of semantics.
+So this doesn't say that these theories
+of semantics don't exist, but you need one.
+Like, otherwise, there's a flaw in your, like,
+epistemic step-by-step reasoning
+on how meaning arises.
+So I think the practical conclusion here
+is be very careful when you apply meaning.
+And this is usually showing metaphors
+to the outputs of these systems.
+So be careful with these metaphors,
+like, things like the AI understands,
+or the AI reasons, or the AI thinks.
+Like, these are very, very powerful
+but dangerous metaphors.
+And these often are applied to negative metaphors as well,
+things like hallucinate, misinterpret, lie.
+These are not like, we don't have a theory of meaning
+for these AIs.
+And I think it's a huge opportunity
+to build theories of meaning to these AIs,
+but we don't have one that is widely acceptable.
+So careful with metaphors,
+especially in a technical setup.
+Finally, my last part of the talk.
+I know I'm a bit late on time,
+but I think I will try to leave time for questions.
+I'll try to be fast here.
+Formatting is an incredibly powerful tool.
+I think I mentioned that before,
+and I will try to give some examples about this.
+So formatting is sometimes called prompt engineering.
+I think this term gets a lot of hype,
+so I try to be, try to not use it.
+But if you do formatting right,
+it's an incredibly powerful tool
+to take the best out of these powerful,
+fancy, autocomplete systems.
+There are two things that I wanna talk about.
+One is demonstrations, other is strength chain of thought.
+And I think there's a third one
+that includes a slide for editing.
+So editing, how do you take an autocomplete
+and you make a model that can edit things
+in the middle of a sentence?
+There is a trick that you apply to these language models,
+where you, with a certain probability,
+like you reshuffle sentences,
+and you add these special words, like pre, mid, and stuff,
+to learn how to predict things in the middle of a sentence.
+And if you apply this to a very small percentage
+of your data set, you basically get this ability
+without damaging all the other code completion capabilities.
+And the fun fact is that this is something
+that you can use in your applications,
+and most people don't know about it.
+But if you are in the middle of a document,
+you can edit things there just by using this trick.
+This also happens, there are other representations
+that apply to the same thing.
+The second thing I want to talk about
+is few-shot prompting.
+Sometimes people try to describe a problem to these models,
+but remember they are very good autocompletes.
+So they're very good at finding the patterns in examples.
+So I always suggest try to give 50 demonstrations.
+It's usually much better than explaining your problem.
+And I highly recommend trying few-shot prompting.
+There's also the opportunity to do instruction tuning.
+It's an effective, but more expensive tools.
+So I always recommend people to try few-shot prompting first
+and then try instruction tuning if that works.
+And usually you can do it via cloud APIs.
+You don't have to build instruction tuning yourself.
+And finally, I think this is another tip,
+very engineering one.
+Don't roll your, don't train your own base models.
+Like it's an incredibly hard and expensive endeavor.
+Like the same way you don't rewrite Linux,
+you don't build your own file system
+and you don't write your own database.
+Don't try to build your own autocomplete.
+Try to leverage the ones that exist in the market
+off the shelf or maybe with some fine tuning.
+And unless you're doing this for research,
+like avoid building your own language models,
+use one from cloud.
+You're usually better off this way
+if you're trying to apply them.
+Finally, be aware of bias.
+The internet is not a neutral place.
+So representation in these models,
+predicting the next word can contain bias.
+My main takeaway here is lots of these issues
+can be fixed and mitigated by these editorial decisions
+in the chat bot, but don't delegate decisions
+where accountability is important.
+We don't know how to fully mitigate those yet.
+Try to apply mitigations whenever you can.
+I think that's it.
+I think it's an incredible moment to be in this field,
+but also a very loud one.
+So try to listen, think and plan before you launch.
+Hope these tips are useful
+as if you ever decide to apply AI.
+I will open to the questions.
+I have some ideas here besides my content, if you want.
+Thanks.
+Thanks, Gabriella.
+Well, lots of interesting stuff.
+I love your animations and the pictures
+that help also in getting the message.
+And they're very interesting topics or thoughts.
+You mentioned, so I was browsing here
+through the questions of the students.
+As you know, one of their activity
+previous to each seminar is a little bit of homework,
+trying to identify which are the five most
+top relevant literature, even at the seminar abstract.
+I will share it with you later.
+But I was browsing through their questions
+and most of them, they touch your last topic on ethics,
+AI, all these ethic related considerations.
+Are you aware about techniques or efforts
+that could overcome this very relevant issue
+around the multiple dimensions behind ethics,
+racism, sexism, and can you share some examples
+shed some light so that these biases can be overcome
+in the future or there is no hope or what are your thoughts?
+Yeah, sure.
+I think this, I wish I had more time to cover this
+but I also wanted to talk about this
+broader philosophical things.
+But on bias, I think one important thing is like
+these systems, they are practically reproducing
+probabilities we've seen in the internet.
+And these true statements are very important.
+I think the internet is not a neutral place
+and it's not an accurate representation of society.
+So sometimes people associate like all the probabilities
+that are in the internet should be reflected in the world.
+I think that's a very heavy statement
+because like not everyone is in the internet
+and not everyone has been in the internet for the same time.
+So, but I strongly believe this is the best we can get
+as a picture of this society.
+What I think is there is a lot of like,
+at least a written one, if you can,
+even if you introduce books and everything like that,
+it's very hard to go beyond that.
+What I think there are solutions is
+lots of these issues can be mitigated
+during that instruction tuning process.
+And there are some really interesting ways of like,
+for example, mitigating gender bias during that step.
+Like you can basically make sure your priors
+for male doctor and female doctor are well represented
+when you do translation from English to Portuguese,
+for example, where gender shows in words, like doctor.
+So there's techniques that can be applied there
+and they should be applied.
+And so there's lots of interesting
+research opportunities there.
+Measuring these effects, I think it's incredibly important.
+So you should be always taking this into account
+when you launch a system.
+You should try to actually measure these.
+And I think the best way to accurately measure
+and know that if you're making,
+that you should probably postpone your product launch
+is to have like a diverse pool of people
+testing your system.
+Like if you don't have those,
+it's much harder to detect those.
+But I believe there is opportunities in research
+to do like more, to include fairness in your,
+and reduce bias in your responses in this,
+like especially in this post-training
+instruction tuning step.
+Right, I like this statement that don't,
+or this recommendation, don't delegate decisions
+where there is accountability behind them.
+That's a very good one.
+Let me jump now over the YouTube channel to the chat.
+There is a technical question that I really don't know.
+What are these vanilla auto-encoders?
+Ariel asked, do you consider vanilla auto-encoders
+as generative AIs since I can explore the latent space?
+I don't know what's latent space
+and not this vanilla auto-encoder.
+Yeah.
+Maybe you can say something.
+Yeah, yeah.
+I think like not a specialist in the field also,
+but like vanilla auto-encoders,
+I think are these models where you try to recreate content
+with a network via bottleneck.
+So you have like very small number of parameters
+at some point in your network
+that basically give you the chance to do,
+to tweak these parameters to do generation.
+I consider them generative
+because I think there is a more technical
+definition of generative AI that I didn't use in my slides
+that is basically like something where the output space
+can be bigger than the input space.
+So it can be considered, I think, generative AI technology,
+but I think it's more borderline.
+I don't think everyone agrees with this, but yeah.
+I would say yes, personally.
+Okay, good.
+I don't know if you would like to comment on this one,
+but that popped up, I was browsing here,
+number of students, they probably saw the release of GPT-4.0
+and they want your opinion.
+And also what is next or would you like to comment
+if you want to skip about GPT-4.0?
+That's also fine, or if, and if not then.
+I mean, yeah, I can comment, I think, on a high level.
+Like I don't, I think it's a very,
+the field is very, very active
+and there's lots of things going out by all the players.
+Sometimes I think there's a risk
+of over-indexing to one particular release.
+Everyone is releasing periodically.
+I think it's, when you look, when you zoom out a bit,
+you can see incremental steps in each one of these models.
+I think this release in particular, I think,
+like this week there has been like two important releases.
+I think the one from OpenAI
+and also the one during Google I.O.
+I think these are both like interesting releases.
+What I like about them the most
+is that I think there is like this huge push
+for smaller models
+that I think are potentially useful in some ways.
+But I won't comment on details about the model
+because I think it gets into complicated territory.
+Yeah, it's fine.
+But I had to do my work as well here by proposing
+through the questions,
+which I will share with you as well.
+About these smaller scales, LLMs,
+is there some space for also like small scale applications
+in embedded devices, in cell phones
+that they don't have so much compute,
+but for some specialized,
+very much specialized tasks would be useful?
+That's one, another question that popped up
+or we need to rely on very large scale computing facilities.
+That's an interesting question.
+And I think that touches a topic
+that is very close to my heart.
+I didn't talk about this today,
+but like I mostly work on code generation.
+I think that's one of my favorite topics.
+And I think it's one of, in my point of view,
+one of the most successful and useful applications of AI.
+And I think lots of the recent models are embedded models
+that you can run on your computer with reasonable latency.
+So I think there's tons of opportunities for these,
+not so narrow, but narrower applications
+that are not like chatbots.
+And they're highly crafted to one particular use case.
+I think code completion is a very successful story.
+Yeah, so I personally believe in that direction a lot.
+And that's not to say that they're less powerful.
+Like don't get me wrong.
+If you take a model that works on a smartphone now,
+it's probably better than like, it's not probably,
+it's definitely better than the best model
+from two years ago.
+So they're quite powerful,
+but I highly believe this application
+of like more targeted on-device use cases.
+And I also like the idea of use cases
+that do one thing by one thing really, really well.
+This gets into products, but I-
+Like specialized data and for a certain domain
+for a certain task.
+Yes.
+A lot of sense, right?
+Because like there's this statement,
+if you want to do everything,
+or you think you do everything well,
+you don't do nothing well or at all, right?
+That's interesting.
+As you know, we in the electrical and computing engineering,
+we also look at hardware a lot.
+There were a few questions here, hardware related.
+So today, most of the computing
+are exploding GPUs, right?
+FPGAs, there is also in the AI domain in the TensorFlow,
+they has a specific deep TensorFlow processing unit.
+Do you see also hardware or are you aware about hardware
+that is going to be designed for a specific LLM type
+of your generative AI applications to accelerate it?
+Maybe it's already happening and I don't know.
+I think it's definitely happening.
+Like I think the latest generation of TPUs and GPUs
+are mostly designed for AI.
+And I think they are extremely like generatively.
+And they are extremely like over-fitted to this problem.
+Like I think there are huge opportunities there.
+Like I think if you, again, something that is up for debate,
+but if you think AI is a revolution, similar,
+you and this is the fuel of this revolution, right?
+And usually if you look back to like industrial revolutions
+in the past, like you need fuel to,
+so you need energy and you need like,
+maybe it's not the fuel, but it's the iron.
+Like I think we have to think about the best comparison here.
+But so lots of companies that focus on hardware
+are extremely well-valued.
+And I think like there's tons of research opportunities
+on doing better hardware for large language models
+and generative AI technologies.
+If you work on this field, I'm very happy for you.
+There are loads of career opportunities for you.
+Good.
+Last question, the same that we had,
+we are already over 2 p.m. Brazil time.
+So what would you recommend to our students
+rather than undergrad if they want to succeed
+and be employed like you in Google DeepMind?
+What is the key there?
+What would be your message?
+If you were talking to these undergrads and grads.
+Be curious, I think don't be afraid
+at applying to these hard positions.
+Try to learn a niche very well that,
+like own the things that are hot.
+Try to find a niche that you do very, very well.
+And the other people don't know much about it.
+And yeah, be curious overall.
+Yeah.
+Yeah, that's my main advice, I would say.
+And don't be afraid to apply into these positions.
+Like it's hard to get in at Google, but not that hard.
+And it's a pretty interesting company to work with.
+Great, I loved it.
+So thank you again.
+And if you step by, of course,
+come over to the faculty and say hello.
+Keep the good work and hope looking forward
+for the upcoming releases over there.
+Was a pleasure to be here.
+Thank you so much.
+Bye.
+Thank you.
+See you all next Thursday with the next talk.
+Thank you.
+Pronto.
