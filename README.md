@@ -4,6 +4,14 @@ A proof-of-concept pipeline that uses generative AI to **produce** a long-form t
 
 > Generation: **Google NotebookLM** &nbsp;•&nbsp; Evaluation: **Google Gemini API** &nbsp;•&nbsp; Orchestration: **Python**
 
+<p align="center">
+  <a href="paper/automated_quality_assessment_report.pdf">
+    <img src="docs/img/report_cover.png" alt="Cover page of the technical report" width="420">
+  </a>
+  <br>
+  <sub><em>Full technical write-up &mdash; <a href="paper/automated_quality_assessment_report.pdf">read the PDF</a></em></sub>
+</p>
+
 ---
 
 ## Why this project
