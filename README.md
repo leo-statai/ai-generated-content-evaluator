@@ -150,4 +150,4 @@ Developed as the final project for the graduate course **IA382 — Seminars in C
 
 ## License
 
-[MIT](LICENSE) © Leonardo Rangel Alves
+[MIT](LICENSE) © Leonardo Alves
